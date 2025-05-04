@@ -17,7 +17,7 @@ typedef struct node {
     struct node* previous;
 } Node;
 
-Node *head = NULL;  // global list necessary for Signalhandler
+Node *head = NULL;  //global list necessary for Signalhandler
 Node *tail = NULL; //= NULL
 
 Node * createNewNode (int payload) {
@@ -43,27 +43,85 @@ Node * createNewNode (int payload) {
 int isNumber(const char *str) {
     while (*str != '\0') {
         if (!isdigit(*str)) {
-            return 0;  // Nicht-Ziffer gefunden
+            return 0;
         }
         str++;
     }
-    return 1;  // Alle Zeichen sind Ziffern
+    return 1;  // All chars are digits
 }
 
 int isNotDoubleData(const char *str) {
     Node *current = head;
-
-    while (current!= NULL) {
+    while (current != NULL) {
         if (current->data == atoi(str)) {
             return 0;
         }
         current = current->next;
     }
-
     return 1;
 }
 
-void swap( Node *a,  Node *b){
+void swap(Node *a, Node *b) {
+    if (a == b) {return;}
+
+    Node *ap = a->previous;
+    Node *bn = b->next;
+
+    if (a->next != b) {
+        //If not neighboured they get swapped in the list
+
+        if (ap) {ap->next = b;}
+        if (bn) {bn->previous = a;}
+
+        b->previous = ap;
+        a->next = bn;
+
+        //Temporary Links
+        //Node *temp = b->next;
+        b->next = a->next;
+        a->previous = b->previous;
+
+        b->next = a;
+        a->previous = b;
+    } else { //They are neighbours
+        if (ap) ap->next = b;
+        if (bn) bn->previous = a;
+
+        b->previous = ap;
+        a->next = bn;
+
+        b->next = a;
+        a->previous = b;
+    }
+
+    //Update Head/Tail if necessary
+    if (head == a){ head = b;}
+    else if (head == b) {head = a;}
+    if (tail == b) {tail = a;}
+    else if (tail == a) {tail = b;}
+}
+
+void bubblesortList(void) {
+    if (head == NULL) return;
+
+    bool swapped;
+    do {
+        swapped = false;
+        Node *current = head;
+
+        while (current && current->next) {
+            if (current->data > current->next->data) {
+                swap(current, current->next);
+                swapped = true;
+                if (current->previous) current = current->previous;
+            } else {
+                current = current->next;
+            }
+        }
+    } while (swapped);
+}
+
+/*void swap( Node *a,  Node *b){
     int temp=a->data;
     a->data=b->data;
     b->data=temp;
@@ -88,16 +146,7 @@ void bubblesortList (void) {
         }
         lastSorted = ptr;
     } while (swapped);
-
-}
-
-/*
-*void swap(struct Number *a, struct Number *b){
-int temp=a->value;
-a->value=b->value;
-b->value=temp;
-}
-*/
+}*/
 
 void printList(void) {
     Node *current = head;
@@ -106,42 +155,49 @@ void printList(void) {
         current = current->next;
     }
     printf("\n");
-
 }
 
 void cleanup_memory() {  //void cleanup_memory(void) vs void cleanup_memory() ?
-    // Speicherbereinigung hier
+
+    Node *current = head;
+    while (current != NULL) {
+        Node *temp = current;
+        current = current->next;
+        free(temp);
+    }
+    printf("\n==================\nCleaning up memory\n==================\n");
+    exit(0);
 }
 
 int main(void) {
-
-    printf("Hallo, Welt lol!\n");
+    //printf("Hallo, Welt lol!\n");
 
     char input[input_Size];
-    signal(SIGINT, cleanup_memory); //=Signal Interrupt
     int run = 1;
+
+    signal(SIGINT, cleanup_memory); //=Signal Interrupt
+    //atexit(cleanup_memory);      //For return 0 Interrupt
+
 
     while (run){
         printf("Eingabe: ");
         fgets(input, sizeof(input), stdin); //Read User Input
         input[strcspn(input, "\n")] = 0; //Removes the "\n" added by fgets from the input
 
-        char *token = strtok(input, " ");  // Trenne bei Leerzeichen
+        char *token = strtok(input, " ");  // Seperate with " " as delimiter
         // Solange es noch Teile gibt, mach weiter
         while (token != NULL) {
-            if (isNumber(token) && isNotDoubleData(token)) { //
+            if (isNumber(token) && isNotDoubleData(token)) {
                 int number = atoi(token);
                 tail = createNewNode(number);
-                //printf("Teil: %d\n", number);  // Verarbeite den Teil
+                //printf("Teil: %d\n", number);  // One Token
             }
-            token = strtok(NULL, " ");  // Nächstes Token
+            token = strtok(NULL, " ");  //Next Token
         }
 
         bubblesortList();
         printf("Ausgabe: ");
         printList();
-
     }
-
     return 0;
 }

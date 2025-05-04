@@ -123,7 +123,7 @@ int main() {
     signal(SIGINT, cleanup_memory);
 
     // Optional auch bei normalem Programmende freigeben
-    //atexit(cleanup_memory);
+    atexit(cleanup_memory);
 
     //printf("$ ./zahlenliste\n");
 
