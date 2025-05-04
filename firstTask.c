@@ -70,8 +70,8 @@ void swap(Node *a, Node *b) {
     if (a->next != b) {
         //If not neighboured they get swapped in the list
 
-        if (ap) {ap->next = b;}
-        if (bn) {bn->previous = a;}
+        if (ap != NULL) {ap->next = b;}
+        if (bn != NULL) {bn->previous = a;}
 
         b->previous = ap;
         a->next = bn;
@@ -84,8 +84,8 @@ void swap(Node *a, Node *b) {
         b->next = a;
         a->previous = b;
     } else { //They are neighbours
-        if (ap) ap->next = b;
-        if (bn) bn->previous = a;
+        if (ap != NULL) ap->next = b;
+        if (bn != NULL) bn->previous = a;
 
         b->previous = ap;
         a->next = bn;
@@ -157,7 +157,7 @@ void printList(void) {
     printf("\n");
 }
 
-void cleanup_memory() {  //void cleanup_memory(void) vs void cleanup_memory() ?
+void cleanup_memory() {  //void cleanup_memory(void) vs. void cleanup_memory() ?
 
     Node *current = head;
     while (current != NULL) {
