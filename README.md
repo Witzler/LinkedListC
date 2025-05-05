@@ -1,6 +1,8 @@
 This is a small implementation of a double linked list in C, which stores integers.  
 The real file is firstTask.c  
-Use: gcc -std=c99 -Wall -pedantic -o firstTask firstTask.c  
+Use:   
+gcc -std=c99 -Wall -pedantic -o firstTask firstTask.c  
+./firstTask  
 Use Control+C to stop the program in Linux.  
   
   
