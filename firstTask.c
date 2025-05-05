@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <signal.h>  // For Signalhandling
 #include <string.h>
-#include <stdlib.h>
+#include <stdlib.h> //malloc
 #include <ctype.h>  // für isdigit()
 #include <stdbool.h>
 
