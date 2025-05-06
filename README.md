@@ -1,12 +1,11 @@
-This is a small implementation of a double linked list in C, which stores integers.  
-The real file is firstTask.c  
-Use:   
+This is a small implementation of a couple of tasks in C.  
+Firstly there is   a double linked list, which stores integers.  
+Secondly we got some code processes, including forks, wait, exec, redirection and pipes.  
+The files are factiwait1 & 2 and redirect.c  
+An example usage of the first task is:   
 gcc -std=c99 -Wall -pedantic -o firstTask firstTask.c  
 ./firstTask  
-Use Control+C to stop the program in Linux.  
-  
-  
-Example:  
+Use Control+C to stop the program in Linux or:  
 Eingabe: 1 3 2  
 Ausgabe: 1 2 3  
 Eingabe: 1 4  
@@ -18,7 +17,6 @@ Ausgabe: 1 2 3 4 7 8 9 10
 Eingabe: foo bar  
 Ausgabe: 1 2 3 4 7 8 9 10  
 Eingabe: ^C  
-==================  
 Cleaning up memory  
   
 Input: 1 3 2  
@@ -32,6 +30,5 @@ Output: 1 2 3 4 7 8 9 10
 Input: foo bar  
 Output: 1 2 3 4 7 8 9 10  
 Input: ^C  
-==================  
 Cleaning up memory  
 
