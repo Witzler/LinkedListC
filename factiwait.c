@@ -27,32 +27,59 @@ int main(int argc, char *argv[]) {
     char **arguments2= NULL; //arguments2[]
     int delimiter_index2 = -1;
 
-    //First PROGRAMM Preperation
+    /* First PROGRAMM Preperation */
     for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "\;") == 0) {
+        if (strcmp(argv[i], ";") == 0) { // in command line: \;
             delimiter_index1 = i;
             break;
         }
     }
     arguments1 = malloc((delimiter_index1) * sizeof(char *) ); //A spot for NULL shall be included here
+    if (arguments1 == NULL) {
+        perror("malloc failed for arguments1");
+        exit(1);
+    }
+    int argumentIndex = 0;
     for (int i = 1; i < delimiter_index1; i++) {
-        int y = 0;
-        arguments1[y] = argv[i];
-        y++;
+        arguments1[argumentIndex] = argv[i];
+        argumentIndex++;
     }
     arguments1[delimiter_index1 -1] = NULL;
 
-    //Second PROGRAMM Preperation
-    delimiter_index2 = argc - delimiter_index1-1;
-    arguments2 = malloc((delimiter_index2+1) * sizeof(char *));
+    /* Second PROGRAMM Preperation */
+    delimiter_index2 = delimiter_index1+1;
+    arguments2 = malloc((argc - delimiter_index2+1) * sizeof(char *));
+    if (arguments2 == NULL) {
+        perror("malloc failed for arguments2");
+        exit(1);
+    }
+    argumentIndex = 0;
     for (int i = delimiter_index2; i < argc; i++) {
-        int y = 0;
-        arguments1[y] = argv[i];
-        y++;
+        arguments2[argumentIndex] = argv[i];
+        argumentIndex++;
     }
     arguments2[delimiter_index2] = NULL;
 
-    //PIDs
+    /*printf("=== arguments1 ===\n");
+    for (int i = 0; arguments1[i] != NULL; i++) {
+        printf("arguments1[%d] = \"%s\"\n", i, arguments1[i]);
+    }
+    int count = 0;
+    while (arguments1[count] != NULL) {
+        count++;
+    }
+    printf("site1: %d\n",count);
+    printf("=== arguments2 ===\n");
+    for (int i = 0; arguments2[i] != NULL; i++) {
+        printf("arguments2[%d] = \"%s\"\n", i, arguments2[i]);
+    }
+    count = 0;
+    while (arguments2[count] != NULL) {
+        count++;
+    }
+    printf("site2: %d\n",count); */
+
+    /* PIDs */
     pid_t pid, wpid;
 
     /*
