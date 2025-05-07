@@ -19,7 +19,6 @@ gcc -std=c99 -Wall -pedantic -o redirect redirect.c
 
 int main(int argc, char *argv[]) {
 
-
     char **arguments= malloc((argc-2) * sizeof(char *) );
     int y = 0;
     for(int i = 3; i<=argc;i++){
@@ -34,7 +33,7 @@ int main(int argc, char *argv[]) {
         dup2(STDOUT_FILENO, STDOUT_FILENO);
     } else {
         if ((output = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1) {
-            perror("Error opening output.txt");
+            perror("Error opening output file");
             exit(1);
         }
         dup2(output, STDOUT_FILENO);
@@ -45,7 +44,7 @@ int main(int argc, char *argv[]) {
         dup2(STDERR_FILENO, STDERR_FILENO);
     } else {
         if ((error = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, 0644)) == -1) {
-            perror("Error opening error.txt");
+            perror("Error opening error file");
             exit(1);
         }
         dup2(error, STDERR_FILENO);
@@ -57,7 +56,6 @@ int main(int argc, char *argv[]) {
         perror("execvp failed");
         exit(1);
     }
-
 
     return 0;
 }
