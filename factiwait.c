@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
     }
     if (pid == 0) { /* first child */
         //char *arguments[]={"ls", "-l", "-a", NULL};
-        printf("child: PID [%i] PPID [%i]\n", getpid(), getppid());
+        printf("child1: PID [%i] PPID [%i]\n", getpid(), getppid());
         execvp(arguments1[0], arguments1);
         perror("Command failed: ");
         exit(1);
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
     }
     if (pid == 0) { /* second child */
         //char *arguments[]={"ls", "-l", "-a", "/foobar", NULL};
-        printf("child: PID [%i] PPID [%i]\n", getpid(), getppid());
+        printf("child2: PID [%i] PPID [%i]\n", getpid(), getppid());
         execvp(arguments2[0], arguments2);
         perror("Command failed: ");
         exit(1);

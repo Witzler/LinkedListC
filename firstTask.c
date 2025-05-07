@@ -157,7 +157,7 @@ void printList(void) {
     printf("\n");
 }
 
-void cleanup_memory() {  //void cleanup_memory(void) vs. void cleanup_memory() ?
+void cleanup_memory(void) {  //void cleanup_memory(void) vs. void cleanup_memory() ?
 
     Node *current = head;
     while (current != NULL) {
