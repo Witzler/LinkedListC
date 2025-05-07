@@ -1,7 +1,8 @@
 This is a small implementation of a couple of tasks in C.  
-Firstly there is   a double linked list, which stores integers.  
+Firstly there is a double linked list, which stores integers.  
 Secondly we got some code processes, including forks, wait, exec, redirection and pipes.  
-The files are factiwait1 & 2 and redirect.c  
+Thirdly there is a programm redirecting an incoming process with (0,*) parameters.  
+The files are firstTask, factiwait1, redirect.c and factiwait1.  
 An example usage of the first task is:   
 gcc -std=c99 -Wall -pedantic -o firstTask firstTask.c  
 ./firstTask  
@@ -31,4 +32,10 @@ Input: foo bar
 Output: 1 2 3 4 7 8 9 10  
 Input: ^C  
 Cleaning up memory  
-
+  
+  
+factiwait will get receive programs and split them up for two forked child processes. The parent waits until both are done.  
+redirect will redirect a process with its parameters to a different file if wished. "-" means the default out/exit shall be used.  
+Instructions for the factiwait and redirect are commented
+on the top of the file.  
+The redirect commands will place files in tmp file outside of the project.  
