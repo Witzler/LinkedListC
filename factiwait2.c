@@ -18,47 +18,77 @@
 //$pipeline ps -aux \| cat \| grep bash
 //$pipeline ls -l /tmp/ \| cat \| wc -l -c -m
 
-int main(int argc, char *argv[]) {
-    char **arguments1= NULL; //arguments1[]
-    int delimiter_index1 = -1;
-    char **arguments2= NULL; //arguments2[]
-    int delimiter_index2 = -1;
-
-    /* First PROGRAMM Preperation */
-    for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], ";") == 0) { // in command line: \;
-            delimiter_index1 = i;
-            break;
+static int o = 0;
+int findDelimiter(char *input[], int currentPosition, int limit){
+    int output;
+    for (int i = currentPosition; i < limit; i++) {
+        if (strcmp(input[i], "|") == 0) { // in command line: \|
+            output = i;
+            o++;
+            return output;//break;
         }
     }
-    arguments1 = malloc((delimiter_index1) * sizeof(char *) ); //A spot for NULL shall be included here
-    if (arguments1 == NULL) {
+    printf("delim went wrong; o: %d \n", o);
+    exit(1);
+}
+void fillParameters(int firstSlot, int lastSlot, char **toBeFilled, char **provider ){
+    int argumentIndex = 0;
+    for (int i = firstSlot; i < lastSlot; i++) {
+        toBeFilled[argumentIndex] = provider[i];
+        argumentIndex++;
+    }
+    toBeFilled[argumentIndex] = NULL;
+    //argumentIndex = 0;
+}
+
+int main(int argc, char *argv[]) {
+    char **arguments1= NULL; //arguments1[]
+    char **arguments2= NULL; //arguments2[]
+    char **arguments3= NULL; //arguments3[]
+    //int delimiter_index3 = -1;
+    //int delimiter_index2 = -1;
+    //int delimiter_index1 = -1;
+
+    int border1 = 1;
+    int border2 = 1;
+    int size = -1;
+
+    /* First PROGRAMM Preperation */
+    border2 = findDelimiter(argv, border1, argc);
+    size = border2;
+    //arguments1 = malloc((border2) * sizeof(char *) ); //A spot for NULL should already be included here
+    if ((arguments1 = malloc((size) * sizeof(char *) )) == NULL) {
         perror("malloc failed for arguments1");
         exit(1);
     }
-    int argumentIndex = 0;
-    for (int i = 1; i < delimiter_index1; i++) {
-        arguments1[argumentIndex] = argv[i];
-        argumentIndex++;
-    }
-    arguments1[delimiter_index1 -1] = NULL;
+    fillParameters(border1, border2, arguments1, argv);
 
     /* Second PROGRAMM Preperation */
-    delimiter_index2 = delimiter_index1+1;
-    arguments2 = malloc((argc - delimiter_index2+1) * sizeof(char *));
-    if (arguments2 == NULL) {
+    border1 = border2+1;
+    border2 = findDelimiter(argv, border1, argc);
+    size= (border2-border1+1);
+    if ((arguments2 = malloc( (size)* sizeof(char *) )) == NULL) {
         perror("malloc failed for arguments2");
         exit(1);
     }
-    argumentIndex = 0;
-    for (int i = delimiter_index2; i < argc; i++) {
-        arguments2[argumentIndex] = argv[i];
-        argumentIndex++;
+    fillParameters(border1, border2, arguments2, argv);
+
+    /* Third PROGRAMM Preperation */
+    border1 = border2+1;
+    border2 = argc -1;
+    size = (border2-border1+1);
+    if ((arguments3 = malloc( (size)* sizeof(char *) )) == NULL) {
+        perror("malloc failed for arguments3");
+        exit(1);
     }
-    arguments2[delimiter_index2] = NULL;
+    fillParameters(border1, border2, arguments3, argv);
 
     /* PIDs */
     pid_t pid, wpid;
+    int pfd[2]; //child 1 to child 2
+    int pfd2[2]; //child 2 to child 3
+
+
 
     if ((pid = fork()) == -1) { /* error */
         perror("Fork failed: ");

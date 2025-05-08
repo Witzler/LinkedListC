@@ -1,4 +1,4 @@
-#define _GNU_SOURCE //pipe2
+//#define _GNU_SOURCE //pipe2
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
